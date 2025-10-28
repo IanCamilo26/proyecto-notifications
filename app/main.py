@@ -56,3 +56,32 @@ def notify(payload: NotifyPayload):
         print("Error sending mail:", e)
         raise HTTPException(status_code=500, detail=str(e))
     return None
+
+@app.get("/health")
+async def health():
+    """Health check simple: responde 200 OK (útil para docker/k8s)."""
+    return {"status": "ok"}
+
+@app.get("/ready")
+async def ready():
+    """
+    Readiness check: intenta conectarse al servidor SMTP si EMAIL_HOST está configurado.
+    - Si EMAIL_HOST no está presente, devuelve 200 (no obligatorio en entorno local).
+    - Si está presente, intenta abrir conexión TCP y devuelve 200 o 500 según resultado.
+    """
+    SMTP_HOST = os.getenv("EMAIL_HOST")
+    SMTP_PORT = int(os.getenv("EMAIL_PORT", "587"))
+
+    if not SMTP_HOST:
+        # Si no hay SMTP configurado, consideramos el servicio 'ready' de todos modos.
+        return {"ready": True, "reason": "smtp not configured"}
+
+    try:
+        # intentamos conectar de forma liviana (solo abrir socket vía smtplib)
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=5) as smtp:
+            # no enviamos login ni correo, solo conexión
+            pass
+        return {"ready": True}
+    except Exception as e:
+        # si falla la conexión, devuelvo 503 para que orquestadores no envíen tráfico
+        raise HTTPException(status_code=503, detail=f"smtp unreachable: {e}")

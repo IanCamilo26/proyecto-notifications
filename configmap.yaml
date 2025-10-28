@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notification-config
+data:
+  default_from: noreply@example.com

@@ -2,11 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: notification-deployment
-  namespace: proyecto-final
+  namespace: notifications
   labels:
     app: notification
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: notification
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: notification
-          image: <ECR_NOTIFICATION_IMAGE>
+          image: 617315822143.dkr.ecr.us-east-1.amazonaws.com/proyecto-notifications
           ports:
             - containerPort: 8080
           env:

@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: notification
-          image: 617315822143.dkr.ecr.us-east-1.amazonaws.com/proyecto-notifications
+          image: 617315822143.dkr.ecr.us-east-1.amazonaws.com/proyecto-notifications:latest
           ports:
             - containerPort: 8080
           env:

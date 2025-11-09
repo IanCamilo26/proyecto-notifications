@@ -21,31 +21,33 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: SMTP_HOST
+            - name: EMAIL_HOST  # ← Nombre correcto que busca main.py
               valueFrom:
                 secretKeyRef:
                   name: smtp-secret
                   key: host
-            - name: SMTP_PORT  # ← AGREGAR
+            - name: EMAIL_PORT  # ← Nombre correcto
               valueFrom:
                 secretKeyRef:
                   name: smtp-secret
                   key: port
-            - name: SMTP_USER
+            - name: EMAIL_HOST_USER  # ← Nombre correcto
               valueFrom:
                 secretKeyRef:
                   name: smtp-secret
                   key: user
-            - name: SMTP_PASSWORD
+            - name: EMAIL_HOST_PASSWORD  # ← Nombre correcto
               valueFrom:
                 secretKeyRef:
                   name: smtp-secret
                   key: password
-            - name: DEFAULT_FROM
+            - name: DEFAULT_FROM_EMAIL
               valueFrom:
                 configMapKeyRef:
                   name: notification-config
                   key: default_from
+            - name: EMAIL_USE_TLS
+              value: "True"
           readinessProbe:
             httpGet:
               path: /health

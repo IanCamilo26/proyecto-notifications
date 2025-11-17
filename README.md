@@ -186,9 +186,7 @@ print(response.json())
 proyecto-notifications/
 ├── app/
 │   ├── __init__.py
-│   ├── main.py          # Punto de entrada FastAPI
-│   ├── config.py        # Configuración y variables de entorno
-│   └── email_service.py # Lógica de envío de emails
+│   └── main.py          # Punto de entrada FastAPI
 ├── requirements.txt
 ├── Dockerfile
 ├── .env.example
